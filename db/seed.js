@@ -7,9 +7,12 @@ module.exports = async({ authorsToCreate = 10, booksToCreate = 100 } = {}) => {
     name: chance.name()
   })));
 
+  const genres = ['Romance', 'Mystery', 'Horror', 'Sci-Fi'];
+
   await Book.create([...Array(booksToCreate)].map(() => ({
     authorId: chance.pickone(authors)._id,
     title: chance.sentence({ words: 5 }),
-    pages: chance.integer({ min: 101, max: 700 })
+    pages: chance.integer({ min: 101, max: 700 }),
+    genre: chance.pickone(genres)
   })));
 };
