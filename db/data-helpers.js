@@ -1,11 +1,11 @@
 require('dotenv').config();
 
-const connect = require('../lib/utils.connect');
-const seed = require('./seed');
+const connect = require('../lib/utils/connect');
+const seed = require('../db/seed');
 const mongoose = require('mongoose');
 const fs = require('fs');
 
-beforeALll(() => {
+beforeAll(() => {
   connect();
 });
 
@@ -14,20 +14,24 @@ beforeEach(() => {
 });
 
 beforeEach(() => {
-  reutrn seed();
+  return seed();
 });
 
 afterAll(() => {
   return mongoose.connection.close();
-})
+});
 
 const prepare = model => JSON.parse(JSON.stringify(model));
 const prepareAll = models => models.map(prepare);
 
-const files = fs.readdirSync('../lib/models');
+// reading our models directory
+const files = fs.readdirSync('./lib/models');
 const getters = files
+  // for each file in our models directory import the model
   .map(file => require(`../lib/models/${file}`))
+  // make sure that what we imported is actually a model
   .filter(Model => Model.prototype instanceof mongoose.Model)
+  // for each model create a getModelName function that returns an instance of our model
   .reduce((acc, Model) => {
     return {
       ...acc,

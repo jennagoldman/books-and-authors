@@ -1,5 +1,5 @@
-const Author = require('./lib/models/Author');
-const Book = require('./lib/models/Book');
+const Author = require('../lib/models/Author');
+const Book = require('../lib/models/Book');
 const chance = require('chance').Chance();
 
 module.exports = async({ authorsToCreate = 10, booksToCreate = 100 } = {}) => {
